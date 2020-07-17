@@ -1,0 +1,9 @@
+liveramp_integration.configuration_form:
+  path: 'admin/config/liveramp-configuration'
+  defaults:
+    _form: '\Drupal\liveramp_integration\Form\LiveRampIntegrationConfigForm'
+    _title: 'Configure LiveRamp GDPR integration'
+  requirements:
+    _permission: 'administer liveramp configuration'
+  options:
+    _admin_route: TRUE

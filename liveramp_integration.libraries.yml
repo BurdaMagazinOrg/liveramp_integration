@@ -1,0 +1,6 @@
+liveramp_integration.vendors:
+  js:
+    js/liveramp_integration.vendors.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal

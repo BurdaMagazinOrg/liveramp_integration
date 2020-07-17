@@ -1,0 +1,6 @@
+liveramp_integration.configuration_form:
+  title: 'LiveRamp GDPR consent integration'
+  route_name: liveramp_integration.configuration_form
+  description: 'Configure application ID and vendor IDs used when giving consent.'
+  parent: system.admin_config_content
+  weight: 99

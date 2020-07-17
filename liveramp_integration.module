@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * @file
+ * Module file.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function liveramp_integration_theme() {
+  return [
+    'liveramp_integration_check_consent_block' => [
+      'variables' => [
+        'app_id'     => NULL,
+        'vendor_ids' => [],
+      ],
+    ],
+    'liveramp_integration_tag'  => [
+      'variables' => [
+        'app_id' => NULL,
+      ],
+    ],
+  ];
+}
