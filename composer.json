@@ -2,5 +2,5 @@
   "name": "burdamagazinorg/liveramp",
   "description": "Integration of the Liveramp consent management.",
   "type": "drupal-module",
-  "license": "GPL-2.0-or-later",
+  "license": "GPL-2.0-or-later"
 }
