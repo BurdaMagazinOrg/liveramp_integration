@@ -10,7 +10,7 @@ use Drupal\Core\Render\Markup;
 /**
  * Implements hook_page_attachments().
  */
-function haus_consent_page_attachments(array &$page) {
+function liveramp_integration_page_attachments(array &$page) {
   $config = \Drupal::config('liveramp_integration.configuration');
   $appId  = $config->get('app_id');
 
@@ -40,7 +40,7 @@ function haus_consent_page_attachments(array &$page) {
     'liveramp_integration-gdpr-liveramp',
   ];
 
-  $vendors = _haus_consent_create_json_list($config->get('vendor_ids'), 'vendorId');
+  $vendors = _liveramp_integration_create_json_list($config->get('vendor_ids'), 'vendorId');
 
   $script =
     <<< JS
@@ -105,7 +105,7 @@ JS;
  *
  * @return false|string
  */
-function _haus_consent_create_json_list(array $values, $key) {
+function _liveramp_integration_create_json_list(array $values, $key) {
   $data = [];
   foreach ($values as $value) {
     $data[][$key] = (int) $value;
