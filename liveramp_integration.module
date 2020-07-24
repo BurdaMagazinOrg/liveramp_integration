@@ -5,21 +5,110 @@
  * Module file.
  */
 
+use Drupal\Core\Render\Markup;
+
 /**
- * Implements hook_theme().
+ * Implements hook_page_attachments().
  */
-function liveramp_integration_theme() {
-  return [
-    'liveramp_integration_check_consent_block' => [
-      'variables' => [
-        'app_id'     => NULL,
-        'vendor_ids' => [],
+function haus_consent_page_attachments(array &$page) {
+  $config = \Drupal::config('liveramp_integration.configuration');
+  $appId  = $config->get('app_id');
+
+  $currentRoute = \Drupal::routeMatch()->getRouteName();
+
+  // Script must be also included on configuration form.
+  if (\Drupal::service('router.admin_context')
+             ->isAdminRoute() && 'liveramp_integration.configuration_form' !== $currentRoute) {
+    return;
+  }
+
+  if (empty($appId)) {
+    return;
+  }
+
+  // Attach liveramp script.
+  $page['#attached']['html_head'][] = [
+    [
+      '#tag'        => 'script',
+      '#attributes' => [
+        'src'   => 'https://gdpr-wrapper.privacymanager.io/gdpr/' . $appId . '/gdpr-liveramp.js',
+        'async' => TRUE,
+        'defer' => TRUE,
       ],
+      '#weight'     => -1,
     ],
-    'liveramp_integration_tag'  => [
-      'variables' => [
-        'app_id' => NULL,
-      ],
-    ],
+    'liveramp_integration-gdpr-liveramp',
   ];
+
+  $vendors = _haus_consent_create_json_list($config->get('vendor_ids'), 'vendorId');
+
+  $script =
+    <<< JS
+(function () {
+
+  let handle = setInterval(function () {
+    if (undefined !== window.__tcfapi) {
+      checkConsent();
+      clearInterval(handle);
+    }
+  }, 50);
+
+  let killId = setTimeout(function () {
+    for (let i = killId; i > 0; i--) {
+      clearInterval(i);
+    }
+  }, 2000);
+
+})();
+
+function checkConsent() {
+  window.__tcfapi('checkConsent', null, function (data, success) {
+     const vendorsWithConsentHc = [];
+
+    if (data && data.length) {
+        data.forEach((item) => {
+            if (item.hasConsent && item.vendorName) {
+                vendorsWithConsentHc.push(item);
+            }
+        });
+    }
+
+    window.consentlayer = window.consentlayer || [];
+    window.consentlayer.push({
+        vendorsWithConsentHc
+    });
+  }, {
+    data: $vendors,
+    recheckConsentOnChange: true,
+    perVendor: true
+  });
+}
+JS;
+
+  $page['#attached']['html_head'][] = [
+    [
+      '#tag'    => 'script',
+      '#value'  => Markup::create($script),
+      '#weight' => -1,
+    ],
+    'liveramp_integration-check-consent',
+  ];
+}
+
+/**
+ * Create json list.
+ *
+ * @param array $values
+ *   Value.
+ * @param string $key
+ *   Key.
+ *
+ * @return false|string
+ */
+function _haus_consent_create_json_list(array $values, $key) {
+  $data = [];
+  foreach ($values as $value) {
+    $data[][$key] = (int) $value;
+  }
+  return json_encode($data);
 }

@@ -5,5 +5,3 @@ liveramp_integration.configuration_form:
     _title: 'Configure LiveRamp GDPR integration'
   requirements:
     _permission: 'administer liveramp configuration'
-  options:
-    _admin_route: TRUE

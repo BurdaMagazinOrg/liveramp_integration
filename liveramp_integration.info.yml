@@ -3,5 +3,3 @@ name: 'LiveRamp integration'
 description: 'LiveRamp consent integration for GDPR'
 package: LiveRamp
 core: 8.x
-dependencies:
- - block
