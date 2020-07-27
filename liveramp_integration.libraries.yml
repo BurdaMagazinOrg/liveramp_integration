@@ -3,4 +3,3 @@ liveramp_integration.vendors:
     js/liveramp_integration.vendors.js: {}
   dependencies:
     - core/jquery
-    - core/drupal

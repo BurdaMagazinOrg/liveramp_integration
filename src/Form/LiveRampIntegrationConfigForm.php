@@ -106,8 +106,7 @@ class LiveRampIntegrationConfigForm extends ConfigFormBase {
 
     // Show vendors list after user set application ID.
     if (!empty($appId)) {
-      $form['consent']['theme'] = [
-        '#theme'    => 'liveramp_integration_tag',
+      $form['consent']['script'] = [
         '#attached' => ['library' => ['liveramp_integration/liveramp_integration.vendors']],
         '#app_id'   => $appId,
       ];
