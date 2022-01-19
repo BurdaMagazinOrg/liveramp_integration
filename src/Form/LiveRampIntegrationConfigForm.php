@@ -119,6 +119,18 @@ class LiveRampIntegrationConfigForm extends ConfigFormBase {
       ];
     }
 
+    $form['consent']['async_mode'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Use script async attribute.'),
+      '#default_value' => $config->get('async_mode'),
+    ];
+
+    $form['consent']['defer_mode'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Use script defer attribute.'),
+      '#default_value' => $config->get('defer_mode'),
+    ];
+
     $form['consent']['actions']['submit'] = [
       '#type'        => 'submit',
       '#value'       => $this->t('Save configuration'),
@@ -139,6 +151,8 @@ class LiveRampIntegrationConfigForm extends ConfigFormBase {
 
     $config->set('app_id', $formData['field_app_id']);
     $config->set('vendor_ids', $formData['field_vendor_id']['values']);
+    $config->set('async_mode', $formData['async_mode']);
+    $config->set('defer_mode', $formData['defer_mode']);
 
     $config->save();
   }

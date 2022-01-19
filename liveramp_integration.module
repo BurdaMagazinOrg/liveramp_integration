@@ -13,6 +13,8 @@ use Drupal\Core\Render\Markup;
 function liveramp_integration_page_attachments(array &$page) {
   $config = \Drupal::config('liveramp_integration.configuration');
   $appId  = $config->get('app_id');
+  $async  = $config->get('async_mode');
+  $defer  = $config->get('defer_mode');
 
   $disableConsent = \Drupal::request()->query->get('disable_gdpr_consent');
   $isDisabled         = (1 === (int) $disableConsent) ? TRUE : FALSE;
@@ -35,8 +37,8 @@ function liveramp_integration_page_attachments(array &$page) {
       '#tag'        => 'script',
       '#attributes' => [
         'src'   => 'https://gdpr-wrapper.privacymanager.io/gdpr/' . $appId . '/gdpr-liveramp.js',
-        'async' => TRUE,
-        'defer' => TRUE,
+        'async' => ($async) ? TRUE : FALSE,
+        'defer' => ($defer) ? TRUE : FALSE,
       ],
       '#weight'     => -1,
     ],
